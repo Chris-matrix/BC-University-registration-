@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
-const sequelize = require('../config'); // Assuming this is your Sequelize instance
+import { DataTypes } from 'sequelize';
+import bcrypt from 'bcrypt';
+import sequelize from '../config/config.js';
 
 const User = sequelize.define('User', {
   username: {
@@ -31,4 +31,4 @@ User.beforeUpdate(async (user) => {
   }
 });
 
-module.exports = User;
+export default User;
