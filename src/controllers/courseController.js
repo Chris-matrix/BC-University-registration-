@@ -1,7 +1,9 @@
-exports.createCourse = async (req, res) => {
+const createCourse = async (req, res) => {
   // Course creation logic here
 };
 
-exports.getAllCourses = async (req, res) => {
+const getAllCourses = async (req, res) => {
   // Logic to retrieve all courses
 };
+
+export default { createCourse, getAllCourses };
