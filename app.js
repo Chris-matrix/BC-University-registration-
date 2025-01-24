@@ -29,7 +29,6 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/', authRoutes);
 app.use('/courses', courseRoutes);
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
