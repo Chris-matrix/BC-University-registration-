@@ -23,7 +23,7 @@ app.use(session({
 
 // Root route
 app.get('/', (req, res) => {
-  res.render('dashboard'); // Render the dashboard.ejs view
+  res.render('frontpage'); // Render the frontpage.ejs view
 });
 
 // Routes

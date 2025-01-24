@@ -63,7 +63,7 @@ router.post('/login', (req, res) => {
 // Logout route
 router.post('/logout', (req, res) => {
   req.session.destroy(); // Destroy the session
-  res.redirect('/login');
+  res.redirect('login');
 });
 
 // Protected routes
