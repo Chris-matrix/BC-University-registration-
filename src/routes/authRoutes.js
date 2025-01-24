@@ -1,13 +1,22 @@
 import express from 'express';
-import { ensureAuthenticated } from '../middleware/auth.js';
 const router = express.Router();
 
 let users = []; // In-memory user storage
+let sessions = {}; // In-memory session storage
 let courses = [ // Sample courses data
   { name: 'Math 101', code: 'MATH101', capacity: 30, enrolledStudents: [] },
   { name: 'Physics 101', code: 'PHYS101', capacity: 25, enrolledStudents: [] },
   { name: 'Chemistry 101', code: 'CHEM101', capacity: 20, enrolledStudents: [] }
 ];
+
+// Middleware to check if the user is authenticated
+function ensureAuthenticated(req, res, next) {
+  if (req.session && req.session.user) {
+    return next();
+  } else {
+    res.redirect('/login');
+  }
+}
 
 // Register page
 router.get('/register', (req, res) => {
@@ -44,7 +53,7 @@ router.post('/login', (req, res) => {
   // Add your authentication logic here
   const user = users.find(user => user.username === username && user.password === password);
   if (user) {
-    req.isAuthenticated = () => true; // Mock authentication
+    req.session.user = user; // Store user in session
     res.redirect('/dashboard'); // Redirect to the dashboard after successful login
   } else {
     res.send('Login failed');
@@ -53,7 +62,7 @@ router.post('/login', (req, res) => {
 
 // Logout route
 router.post('/logout', (req, res) => {
-  req.isAuthenticated = () => false; // Mock logout
+  req.session.destroy(); // Destroy the session
   res.redirect('/login');
 });
 

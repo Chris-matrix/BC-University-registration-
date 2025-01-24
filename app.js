@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import session from 'express-session';
 import authRoutes from './src/routes/authRoutes.js';
 import courseRoutes from './src/routes/courseRoutes.js';
 
@@ -14,6 +15,11 @@ app.set('views', './src/views'); // Adjust this path to match your project struc
 // Global Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Add this line to parse URL-encoded bodies
+app.use(session({
+  secret: 'your_secret_key', // Replace with your secret key
+  resave: false,
+  saveUninitialized: true
+}));
 
 // Root route
 app.get('/', (req, res) => {
