@@ -1,37 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Courses</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - University of Greenfield</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  <div class="container">
-    <h2>Courses</h2>
-    <ul class="list-group">
-      <% courses.forEach(course => { %>
-        <li class="list-group-item">
-          <h3><%= course.name %></h3>
-          <p>Code: <%= course.code %></p>
-          <p>Capacity: <%= course.capacity %></p>
-          <p>Enrolled: <%= course.enrolledStudents.length %></p>
-          <button class="btn btn-success btn-sm" onclick="addCourse('<%= course.name %>')">Add</button>
-          <button class="btn btn-danger btn-sm" onclick="removeCourse('<%= course.name %>')">Remove</button>
-        </li>
-      <% }) %>
-    </ul>
-  </div>
-  <script>
-    function addCourse(courseName) {
-      // Add course logic here
-      alert('Course added: ' + courseName);
-    }
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="/">UG Registration</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/courses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    function removeCourse(courseName) {
-      // Remove course logic here
-      alert('Course removed: ' + courseName);
-    }
-  </script>
+    <header class="jumbotron text-center text-white">
+        <div class="container">
+            <h1 class="display-4">Available Courses</h1>
+            <p class="lead">Browse and manage your course registrations below.</p>
+        </div>
+    </header>
+
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="card-title mb-0">Course List</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <% courses.forEach(course => { %>
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3 class="mb-1"><%= course.name %></h3>
+                                            <p class="mb-0">Code: <%= course.code %> | Capacity: <%= course.capacity %> | Enrolled: <%= course.enrolledStudents.length %></p>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-success btn-sm me-2" onclick="addCourse('<%= course.code %>')">Add</button>
+                                            <button class="btn btn-danger btn-sm" onclick="removeCourse('<%= course.code %>')">Remove</button>
+                                        </div>
+                                    </div>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-primary text-white text-center py-3">
+        <div class="container">
+            © 2025 University of Greenfield
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function addCourse(courseCode) {
+            // Add course logic here
+            alert('Course added: ' + courseCode);
+        }
+
+        function removeCourse(courseCode) {
+            // Remove course logic here
+            alert('Course removed: ' + courseCode);
+        }
+    </script>
 </body>
 </html>
