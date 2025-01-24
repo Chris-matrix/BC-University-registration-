@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University of Greenfield - Student Registration System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">UG Registration</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/courses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to the University of Greenfield</h1>
+            <p class="lead">Manage your courses below.</p>
+        </div>
+        <h2>Courses</h2>
+        <ul class="list-group" id="course-list">
+            <!-- Example course item -->
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Course Name
+                <div>
+                    <button class="btn btn-success btn-sm" onclick="addCourse('Course Name')">Add</button>
+                    <button class="btn btn-danger btn-sm" onclick="removeCourse('Course Name')">Remove</button>
+                </div>
+            </li>
+            <!-- Add more course items here -->
+        </ul>
+        <form id="add-course-form" class="mt-4">
+            <div class="mb-3">
+                <label for="course-name" class="form-label">Course Name</label>
+                <input type="text" class="form-control" id="course-name" placeholder="Enter course name">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Course</button>
+        </form>
+    </div>
+    <script>
+        function addCourse(courseName) {
+            // Add course logic here
+            alert('Course added: ' + courseName);
+        }
+
+        function removeCourse(courseName) {
+            // Remove course logic here
+            alert('Course removed: ' + courseName);
+        }
+
+        document.getElementById('add-course-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const courseName = document.getElementById('course-name').value;
+            if (courseName) {
+                addCourse(courseName);
+                // Add the course to the list
+                const courseList = document.getElementById('course-list');
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                listItem.innerHTML = `
+                    ${courseName}
+                    <div>
+                        <button class="btn btn-success btn-sm" onclick="addCourse('${courseName}')">Add</button>
+                        <button class="btn btn-danger btn-sm" onclick="removeCourse('${courseName}')">Remove</button>
+                    </div>
+                `;
+                courseList.appendChild(listItem);
+                document.getElementById('course-name').value = '';
+            }
+        });
+    </script>
+</body>
+</html>
