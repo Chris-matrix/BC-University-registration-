@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+// connectDB.js
+const mongoose = require('mongoose');
+require('dotenv').config(); // Load environment variables from .env file
 
-dotenv.config(); // Load environment variables from a .env file
-
+// Connects to the database
 const connectDB = async () => {
     try {
         // Use the MONGODB_URI from the .env file
@@ -17,4 +17,4 @@ const connectDB = async () => {
     }
 };
 
-export default connectDB;
+module.exports = connectDB;

@@ -1,3 +1,29 @@
+const bcrypt = require('bcrypt');
+
+
+exports.renderDashboardPage = async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId).populate('enrolledCourses');
+    const courses = await Course.find();
+    res.render('dashboard', { title: 'Dashboard', user, courses });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+};
+
+// Render the login page
+exports.renderLoginPage = (req, res) => {
+  res.render('login', { title: 'Login' });
+};
+
+// Render the registration page
+exports.renderRegisterPage = (req, res) => {
+  res.render('register', { title: 'Register' });
+};
+
+
+// Handle login form submission
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -32,6 +58,8 @@ exports.login = async (req, res) => {
 };
 
 
+
+
 // Handle registration form submission
 exports.register = async (req, res) => {
   const { fullName, email, password, role } = req.body;
@@ -49,3 +77,21 @@ exports.register = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+
+
+
+// Render the dashboard page
+// controllers/userController.js
+exports.renderDashboardPage = async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId).populate('enrolledCourses');
+    const courses = await Course.find();
+    res.render('dashboard', { title: 'Dashboard', user, courses });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+};
+
+
