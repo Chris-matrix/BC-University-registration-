@@ -3,16 +3,16 @@ nav ul li a {
     color: #ffffff;
     text-decoration: none;
     padding: 15px 20px;
-    background-color: #007bff; /* Updated color */
+    background-color: #4CAF50; /* Updated color */
 }
 
 nav ul li a:hover {
-    background-color: #0056b3; /* Updated color */
+    background-color: #45a049; /* Updated color */
 }
 
 /* Main Content */
 .main-content {
-    background: #f8f9fa; /* Updated color */
+    background: #e0f7fa; /* Updated color */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -23,20 +23,20 @@ nav ul li a:hover {
     display: inline-block;
     font-size: 16px;
     color: #ffffff;
-    background-color: #28a745; /* Updated color */
+    background-color: #ff5722; /* Updated color */
     padding: 10px 20px;
     border-radius: 5px;
     text-decoration: none;
 }
 
 .btn:hover {
-    background-color: #218838; /* Updated color */
+    background-color: #e64a19; /* Updated color */
 }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 20px 0;
-    background-color: #343a40; /* Updated color */
+    background-color: #607d8b; /* Updated color */
     color: #ffffff;
 }
