@@ -1,59 +1,55 @@
-import express from 'express';
-import Student from '../models/Student.js';
-
+const express = require('express');
 const router = express.Router();
+const studentController = require('../controllers/studentController');
 
-// Example route
+// Middleware to check if user is logged in
+const isAuthenticated = (req, res, next) => {
+  if (req.session.userId) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+};
+
+// Redirect root URL to frontpage
 router.get('/', (req, res) => {
-  res.render('./frontpage');
+  res.render('frontpage'); // Corrected path
 });
 
+// Route to render the admin page
+router.get('/admin', (req, res) => {
+  res.render('Staff&Faculty/admin', { title: 'Admin Dashboard' });
+});
 
-router.get('/login', (req, res) => {
-    res.render('./login');
-  });
-  router.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/');
-  });
-router.get('/register', (req, res) => {
-    res.render('./register');
-  });
-// Register a new student
-router.post('/register', async (req, res) => {
-    try {
-      const { name, email, age, course } = req.body;
-      const student = new Student({ name, email, age, course });
-      await student.save();
-      res.status(201).json({ message: 'Registration successful!', student });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
-  
-  // Login a student
-  router.post('/login', async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const student = await Student.findOne({ email, password });
-      if (!student) {
-        return res.status(401).json({ message: 'Invalid email or password' });
-      }
-      req.session.student = student; // Store student in session
-      res.status(200).json({ message: 'Login successful!', student });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-  
-  // Get all registered students
-  router.get('/students', async (req, res) => {
-    try {
-      const students = await Student.find();
-      res.status(200).json(students);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-  
-  export default router;
+// Route to render the teacher page
+router.get('/teacher', (req, res) => {
+  res.render('Staff&Faculty/teacher', { title: 'Teacher Dashboard' });
+});
+
+// Route to render the course page
+router.get('/course', isAuthenticated, async (req, res) => {
+  try {
+    const courses = await Course.find(); // Fetch courses from the database
+    const user = await User.findById(req.session.userId).populate('enrolledCourses'); // Fetch user from the database and populate enrolledCourses
+    res.render('course', { title: 'Course Enrollment', courses, user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+});
+
+// Route to render the login page
+router.get('/login', studentController.renderLoginPage);
+// Route to handle login form submission
+router.post('/login', studentController.login);
+
+// Route to render the registration page
+router.get('/register', studentController.renderRegisterPage);
+// Route to handle registration form submission
+router.post('/register', studentController.register);
+
+// Route to render the dashboard page
+router.get('/dashboard', isAuthenticated, studentController.renderDashboardPage);
+
+
+module.exports = router;

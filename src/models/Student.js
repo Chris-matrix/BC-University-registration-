@@ -1,26 +1,29 @@
-// filepath: /c:/Users/cmaxx/university app/BC-University-registration-/src/models/Student.js
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-const studentSchema = new mongoose.Schema({
-  name: {
+const userSchema = new mongoose.Schema({
+  fullName: {
     type: String,
-    required: true,
+    required: true
   },
   email: {
     type: String,
     required: true,
-    unique: true,
-  },
-  course: {
-    type: String,
-    required: true,
+    unique: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
+  role: {
+    type: String,
+    enum: ['admin', 'faculty', 'student'],
+    default: 'student'
+  },
+  enrolledCourses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course'
+  }]
+  // Add other fields as necessary
 });
 
-const Student = mongoose.model('Student', studentSchema);
-
-export default Student;
+module.exports = mongoose.models.User || mongoose.model('User', userSchema);

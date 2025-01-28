@@ -16,14 +16,13 @@
     "nodemon": "^3.1.9"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "name": "bc-university-registration-",
   "version": "1.0.0",
   "description": "A comprehensive digital transformation solution for student registration processes, designed to modernize and streamline administrative workflows in higher education.",
-  "main": "server.js",
-  "type": "module",
+  "main": "app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DeniedPath/BC-University-registration-.git"
