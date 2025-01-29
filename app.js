@@ -1,7 +1,7 @@
 const express = require('express');
 const connectDB = require('./src/config/db.js');
 const app = express();
-const PORT = 3000;
+const PORT = 27017;
 
 // Middleware
 app.use(express.json());
