@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const User = require("../models/User"); 
 
 
 exports.renderDashboardPage = async (req, res) => {
@@ -62,17 +63,24 @@ exports.login = async (req, res) => {
 
 // Handle registration form submission
 exports.register = async (req, res) => {
+
   const { fullName, email, password, role } = req.body;
-  console.log("req.body",req.body);// For debugging purposes
+
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).send('Email is already registered.');
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ fullName, email, password: hashedPassword, role });
-    await newUser.save();
-    res.redirect('/login');
+
+      const existingUser = await User.findOne({ email });
+
+      console.log("STUDENT:::", existingUser); 
+      
+      if (existingUser) {
+        return res.status(400).send('Email is already registered.');
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new User({ fullName, email, password: hashedPassword, role });
+        await newUser.save();
+        res.redirect('/login');
+  
   } catch (error) {
     console.error(error);
     res.status(500).send('Server error');

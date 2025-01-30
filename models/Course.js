@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const sequelize = require('sequelize');
 
-const courseSchema = new mongoose.Schema({
+const courseSchema = new sequelize.Schema({
     title: {
         type: String,
         required: true
@@ -10,12 +10,12 @@ const courseSchema = new mongoose.Schema({
         required: true
     },
     instructor: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: sequelize.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
     students: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: sequelize.Schema.Types.ObjectId,
         ref: 'User'
     }],
     capacity: {
@@ -36,4 +36,4 @@ const courseSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Course', courseSchema);
+module.exports = sequelize.model('Course', courseSchema);

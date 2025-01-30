@@ -13,7 +13,7 @@ connectDB();
 
 // Set view engine to EJS
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/src/views'); // Ensure this path is correct
+app.set('views', __dirname + '/views'); // Ensure this path is correct
 
 // Routes
 const studentRoutes = require('./routes/studentRoutes.js');
