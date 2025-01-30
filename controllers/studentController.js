@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/User');
+
 
 exports.renderDashboardPage = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ exports.renderDashboardPage = async (req, res) => {
     res.render('dashboard', { title: 'Dashboard', user, courses });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Somthing broke');
+    res.status(500).send('Server error');
   }
 };
 
@@ -53,7 +53,7 @@ exports.login = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send('Somthing broke again ');
+    res.status(500).send('Server error');
   }
 };
 
@@ -63,11 +63,9 @@ exports.login = async (req, res) => {
 // Handle registration form submission
 exports.register = async (req, res) => {
   const { fullName, email, password, role } = req.body;
+  console.log("req.body",req.body);// For debugging purposes
   try {
-
     const existingUser = await User.findOne({ email });
-    conosle.log("Student",existingUser);
-
     if (existingUser) {
       return res.status(400).send('Email is already registered.');
     }
@@ -77,7 +75,7 @@ exports.register = async (req, res) => {
     res.redirect('/login');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Send help its broken');
+    res.status(500).send('Server error');
   }
 };
 
@@ -93,7 +91,7 @@ exports.renderDashboardPage = async (req, res) => {
     res.render('dashboard', { title: 'Dashboard', user, courses });
   } catch (error) {
     console.error(error);
-    res.status(500).send('You got this fix that errors');
+    res.status(500).send('Server error');
   }
 };
 

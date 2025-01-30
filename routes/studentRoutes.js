@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const studentController = require('../controllers/studentController');
-const User = require('../models/User');
-const Course = require('../models/Courses');
+const User = require('../models/User'); 
+const Course = require('../models/Course'); // Error points here:  you need to remain these to mactch the lowercase file name you importing
 
 // Middleware to check if user is logged in
 const isAuthenticated = (req, res, next) => {
