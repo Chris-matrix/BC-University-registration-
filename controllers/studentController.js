@@ -63,6 +63,7 @@ exports.login = async (req, res) => {
 // Handle registration form submission
 exports.register = async (req, res) => {
   const { fullName, email, password, role } = req.body;
+  console.log("req.body",req.body);// For debugging purposes
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
