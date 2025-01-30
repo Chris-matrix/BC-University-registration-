@@ -1,39 +1,41 @@
-const sequelize = require('sequelize');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/dbconfig.js'; // Adjust the path as needed
 
-const courseSchema = new sequelize.Schema({
+const Course = sequelize.define('Course', {
     title: {
-        type: String,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false, // Equivalent to required: true in Mongoose
     },
     description: {
-        type: String,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false,
     },
-    instructor: {
-        type: sequelize.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    instructorId: {
+        type: DataTypes.INTEGER, // Assuming instructorId is an INTEGER (foreign key)
+        allowNull: false,
+        references: {
+            model: 'Users', // Name of the referenced table
+            key: 'id', // Primary key in the referenced table
+        },
     },
-    students: [{
-        type: sequelize.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
     capacity: {
-        type: Number,
-        required: true
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
     startDate: {
-        type: Date,
-        required: true
+        type: DataTypes.DATE,
+        allowNull: false,
     },
     endDate: {
-        type: Date,
-        required: true
+        type: DataTypes.DATE,
+        allowNull: false,
     },
     createdAt: {
-        type: Date,
-        default: Date.now
-    }
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW, // Equivalent to default: Date.now in Mongoose
+    },
+}, {
+    timestamps: false, // Disable Sequelize's default timestamps (createdAt, updatedAt)
 });
 
-module.exports = sequelize.model('Course', courseSchema);
+export default Course;

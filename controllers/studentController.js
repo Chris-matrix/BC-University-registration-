@@ -1,49 +1,31 @@
-const bcrypt = require('bcrypt');
-
-
-exports.renderDashboardPage = async (req, res) => {
-  try {
-    const user = await User.findById(req.session.userId).populate('enrolledCourses');
-    const courses = await Course.find();
-    res.render('dashboard', { title: 'Dashboard', user, courses });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server error');
-  }
-};
+import bcrypt from 'bcryptjs';
 
 // Render the login page
-exports.renderLoginPage = (req, res) => {
+export const renderLoginPage = (req, res) => {
   res.render('login', { title: 'Login' });
 };
 
 // Render the registration page
-exports.renderRegisterPage = (req, res) => {
+export const renderRegisterPage = (req, res) => {
   res.render('register', { title: 'Register' });
 };
 
-
 // Handle login form submission
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   const { email, password } = req.body;
+  const dbConnection = req.app.get('dbConnection');
   try {
-    // Find user by email
-    const user = await User.findOne({ email });
-    if (!user) {
+    const [rows] = await user.findOne({ email: email, password: password });
+    if (rows.length === 0) {
       return res.status(400).send('Invalid email or password.');
     }
-
-    // Compare passwords
+    const user = rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).send('Invalid email or password.');
     }
-
-    // Store user ID and role in session for session management
-    req.session.userId = user._id;
+    req.session.userId = user.id;
     req.session.role = user.role;
-
-    // Redirect based on role
     if (user.role === 'admin') {
       res.redirect('/admin');
     } else if (user.role === 'faculty') {
@@ -57,21 +39,17 @@ exports.login = async (req, res) => {
   }
 };
 
-
-
-
 // Handle registration form submission
-exports.register = async (req, res) => {
-  const { fullName, email, password, role } = req.body;
-  console.log("req.body",req.body);// For debugging purposes
+export const register = async (req, res) => {
+  const { username, email, password, role } = req.body;
+  const dbConnection = req.app.get('dbConnection');
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const [existingUser] = await dbConnection.execute('SELECT * FROM users WHERE email = ?', [email]);
+    if (existingUser.length > 0) {
       return res.status(400).send('Email is already registered.');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ fullName, email, password: hashedPassword, role });
-    await newUser.save();
+    await dbConnection.execute('INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)', [username, email, hashedPassword, role]);
     res.redirect('/login');
   } catch (error) {
     console.error(error);
@@ -79,20 +57,15 @@ exports.register = async (req, res) => {
   }
 };
 
-
-
-
 // Render the dashboard page
-// controllers/userController.js
-exports.renderDashboardPage = async (req, res) => {
+export const renderDashboardPage = async (req, res) => {
+  const dbConnection = req.app.get('dbConnection');
   try {
-    const user = await User.findById(req.session.userId).populate('enrolledCourses');
-    const courses = await Course.find();
-    res.render('dashboard', { title: 'Dashboard', user, courses });
+    const [user] = await dbConnection.execute('SELECT * FROM users WHERE id = ?', [req.session.userId]);
+    const [courses] = await dbConnection.execute('SELECT * FROM courses');
+    res.render('dashboard', { title: 'Dashboard', user: user[0], courses });
   } catch (error) {
     console.error(error);
     res.status(500).send('Server error');
   }
 };
-
-

@@ -1,33 +1,34 @@
-const mongoose = require('mongoose');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/dbconfig.js'; // Adjust the path as needed
 
-const userSchema = new mongoose.Schema({
+const User = sequelize.define('User', {
     username: {
-        type: String,
-        required: true,
-        unique: true
+        type: DataTypes.STRING,
+        allowNull: false, // Equivalent to required: true in Mongoose
+        unique: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            isEmail: true, // Validate email format
+        },
     },
     password: {
-        type: String,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false,
     },
-    enrolledCourses: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course'
-    }],
     role: {
-        type: String,
-        enum: ['student', 'teacher', 'admin'],
-        default: 'student'
+        type: DataTypes.ENUM('student', 'teacher', 'admin'),
+        defaultValue: 'student', // Equivalent to default: 'student' in Mongoose
     },
     createdAt: {
-        type: Date,
-        default: Date.now
-    }
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW, // Equivalent to default: Date.now in Mongoose
+    },
+}, {
+    timestamps: false, // Disable Sequelize's default timestamps (createdAt, updatedAt)
 });
 
-module.exports = mongoose.model('User', userSchema);
+export default User;
