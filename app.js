@@ -2,18 +2,13 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import session from 'express-session';
-import connectDB from './config/db.js';
-import studentRoutes from './routes/studentRoutes.js';
+import sequelize from './config/db.js'; // Ensure this path is correct
+import studentRoutes from './routes/studentRoutes.js'; // Ensure this path is correct
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
-
-// Connect to MySQL
-const dbConnection = await connectDB();
-
-app.set('dbConnection', dbConnection); // Store the connection in the app
+const PORT = process.env.PORT || 3000;
 
 // Set view engine to EJS
 app.set('view engine', 'ejs');
@@ -33,7 +28,15 @@ app.use(session({
 // Routes
 app.use('/', studentRoutes);
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Sync all models with the database
+sequelize.sync()
+  .then(() => {
+    console.log('Database synchronized');
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error synchronizing the database:', error);
+  });
