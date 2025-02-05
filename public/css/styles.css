@@ -1,21 +1,42 @@
 /* Navigation */
+nav {
+    background-color: #004080; /* University-themed color */
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
 nav ul li a {
     color: #ffffff;
     text-decoration: none;
-    padding: 15px 20px;
-    background-color: #007bff; /* Updated color */
+    padding: 10px 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
 nav ul li a:hover {
-    background-color: #0056b3; /* Updated color */
+    background-color: #002060; /* Darker shade for hover */
+    border-radius: 5px;
 }
 
 /* Main Content */
 .main-content {
-    background: #f8f9fa; /* Updated color */
-    padding: 20px;
+    background: #f8f9fa; /* Light background */
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 1200px;
 }
 
 /* Buttons */
@@ -23,25 +44,84 @@ nav ul li a:hover {
     display: inline-block;
     font-size: 16px;
     color: #ffffff;
-    background-color: #28a745; /* Updated color */
+    background-color: #28a745; /* Green color */
     padding: 10px 20px;
     border-radius: 5px;
     text-decoration: none;
+    transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #218838; /* Updated color */
+    background-color: #218838; /* Darker green for hover */
 }
 
 /* Footer Styles */
 footer {
     text-align: center;
     padding: 20px 0;
-    background-color: #343a40; /* Updated color */
+    background-color: #004080; /* University-themed color */
+    color: #ffffff;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Additional Styles */
+.header {
+    text-align: center;
+    padding: 50px 0;
+    background-color: #004080; /* University-themed color */
     color: #ffffff;
 }
 
+.header h1 {
+    margin: 0;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.header p {
+    font-size: 18px;
+    margin: 10px 0 0;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.card p {
+    margin: 10px 0 0;
+}
+
+.btn-outline-secondary {
+    color: #004080;
+    border: 2px solid #004080;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .btn-outline-secondary:hover {
-    background-color: #3498db;
-    color: white;
+    background-color: #004080;
+    color: #ffffff;
 }

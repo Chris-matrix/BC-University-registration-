@@ -35,7 +35,7 @@ export const login = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server error');
+    res.status(500).send('Something went wrong logging');
   }
 };
 
@@ -53,7 +53,7 @@ export const register = async (req, res) => {
     res.redirect('/login');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server error');
+    res.status(500).send('Error to fix registration');
   }
 };
 
@@ -66,6 +66,6 @@ export const renderDashboardPage = async (req, res) => {
     res.render('dashboard', { title: 'Dashboard', user: user[0], courses });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server error');
+    res.status(500).send('Dashboard error');
   }
 };

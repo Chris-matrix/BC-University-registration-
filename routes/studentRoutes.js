@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Middleware to check if user is logged in
 const isAuthenticated = (req, res, next) => {
-  if (req.session.userId) {
+  if (req.session && req.session.userId) {
     next();
   } else {
     res.redirect('/login');
@@ -28,8 +28,8 @@ router.get('/admin', isAuthenticated, async (req, res) => {
       courses
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Server error');
+    console.error('Error fetching admin data:', error);
+    res.status(500).send('Admin error');
   }
 });
 
@@ -43,7 +43,14 @@ router.post('/register', register);
 router.get('/login', renderLoginPage);
 
 // Handle login form submission
-router.post('/login', login);
+router.post('/login', async (req, res) => {
+  try {
+    await login(req, res);
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(401).send('Invalid credentials');
+  }
+});
 
 // Render the dashboard page
 router.get('/dashboard', isAuthenticated, renderDashboardPage);
@@ -52,7 +59,7 @@ router.get('/dashboard', isAuthenticated, renderDashboardPage);
 router.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      console.error(err);
+      console.error('Error logging out:', err);
       return res.status(500).send('Error logging out');
     }
     res.redirect('/login');
