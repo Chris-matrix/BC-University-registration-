@@ -17,7 +17,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #fcf9f9;
+    color: #000000; /* Changed to black */
     text-decoration: none;
     padding: 10px 15px;
     font-weight: bold;
@@ -31,7 +31,7 @@ nav ul li a:hover {
 
 /* Main Content */
 .main-content {
-    background: #f8f9fa; /* Light background */
+    background: #eff5f5; /* Light background */
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -60,7 +60,7 @@ footer {
     text-align: center;
     padding: 20px 0;
     background-color: #004080; /* University-themed color */
-    color: #ffffff;
+    color: #000000; /* Changed to black */
     position: absolute;
     width: 100%;
     bottom: 0;
@@ -69,6 +69,7 @@ footer {
 footer p {
     margin: 0;
     font-size: 14px;
+    color: #000000; /* Changed to black */
 }
 
 /* Additional Styles */
@@ -76,18 +77,20 @@ footer p {
     text-align: center;
     padding: 50px 0;
     background-color: #004080; /* University-themed color */
-    color: #ffffff;
+    color: #000000; /* Changed to black */
 }
 
 .header h1 {
     margin: 0;
     font-size: 48px;
     font-weight: bold;
+    color: #000000; /* Changed to black */
 }
 
 .header p {
     font-size: 18px;
     margin: 10px 0 0;
+    color: #000000; /* Changed to black */
 }
 
 .container {
@@ -106,10 +109,12 @@ footer p {
 
 .card h2 {
     margin-top: 0;
+    color: #000000; /* Changed to black */
 }
 
 .card p {
     margin: 10px 0 0;
+    color: #000000; /* Changed to black */
 }
 
 .btn-outline-secondary {

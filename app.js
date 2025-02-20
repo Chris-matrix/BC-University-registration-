@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import session from 'express-session';
-import sequelize from './config/db.js'; // Ensure this path is correct
+import mysql from 'mysql2/promise';
 import studentRoutes from './routes/studentRoutes.js'; // Ensure this path is correct
 
 dotenv.config();
@@ -25,18 +25,25 @@ app.use(session({
   saveUninitialized: true
 }));
 
+// Database connection
+const dbConnection = await mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+});
+
+// Attach the database connection to the req object
+app.use((req, res, next) => {
+  req.dbConnection = dbConnection;
+  next();
+});
+
 // Routes
 app.use('/', studentRoutes);
 
-// Sync all models with the database
-sequelize.sync()
-  .then(() => {
-    console.log('Database synchronized');
-    // Start the server
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error('Error synchronizing the database:', error);
-  });
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port  http://localhost:${PORT}`);
+});

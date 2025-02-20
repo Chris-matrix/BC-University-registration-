@@ -1,9 +1,18 @@
 import express from 'express';
-import { register, login } from '../controllers/studentController.js'; // Ensure this path is correct
+import { register, login, renderRegisterPage, renderLoginPage, renderDashboardPage } from '../controllers/studentController.js'; // Ensure this path is correct
 import isAuthenticated from '../middleware/isAuthenticated.js'; // Ensure this path is correct
-import Course from '../models/Course.js'; // Ensure this path is correct
 
 const router = express.Router();
+
+// Middleware to check if user is logged in
+// Remove this duplicate declaration
+// const isAuthenticated = (req, res, next) => {
+//   if (req.session.userId) {
+//     next();
+//   } else {
+//     res.redirect('/login');
+//   }
+// };
 
 // Redirect root URL to frontpage
 router.get('/', (req, res) => {
@@ -13,11 +22,12 @@ router.get('/', (req, res) => {
 // Route to render the admin page
 router.get('/admin', isAuthenticated, async (req, res) => {
   try {
-    const users = await User.findAll();
-    const courses = await Course.findAll({ include: 'instructor' });
+    const [users] = await req.dbConnection.execute('SELECT * FROM users');
+    const [courses] = await req.dbConnection.execute('SELECT * FROM courses');
     res.render('Staff&Faculty/admin', {
+      title: 'Admin Dashboard',
       users,
-      courses,
+      courses
     });
   } catch (error) {
     console.error('Error fetching admin data:', error);
@@ -26,40 +36,25 @@ router.get('/admin', isAuthenticated, async (req, res) => {
 });
 
 // Route to render the registration page
-router.get('/register', (req, res) => {
-  res.render('register');
-});
+router.get('/register', renderRegisterPage);
 
 // Handle registration form submission
-router.post('/register', async (req, res) => {
-  try {
-    await register(req, res);
-  } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).send('Error during registration');
-  }
-});
+router.post('/register', register);
 
 // Route to render the login page
-router.get('/login', (req, res) => {
-  res.render('login');
-});
+router.get('/login', renderLoginPage);
 
 // Handle login form submission
-router.post('/login', async (req, res) => {
-  try {
-    await login(req, res);
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(401).send('Invalid credentials');
-  }
-});
+router.post('/login', login);
 
 // Render the dashboard page
-router.get('/dashboard', isAuthenticated, async (req, res) => {
+router.get('/dashboard', isAuthenticated, renderDashboardPage);
+
+// Route to get all courses
+router.get('/courses', isAuthenticated, async (req, res) => {
   try {
-    const courses = await Course.findAll();
-    res.render('dashboard', { courses });
+    const [courses] = await req.dbConnection.execute('SELECT * FROM courses');
+    res.render('courses', { courses });
   } catch (error) {
     console.error('Error fetching courses:', error);
     res.status(500).send('Error fetching courses');
