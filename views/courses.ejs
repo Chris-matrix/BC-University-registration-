@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses - University of Greenfield</title>
+    <title>Courses - University of Smallville</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -66,11 +66,13 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="mb-1"><%= course.name %></h3>
-                                            <p class="mb-0">Code: <%= course.code %> | Capacity: <%= course.capacity %> | Enrolled: <%= course.enrolledStudents.length %></p>
+                                            <p class="mb-0">Code: <%= course.code %> | Capacity: <%= course.capacity %> | Enrolled: <%= course.enrolledStudents ? course.enrolledStudents.length : 0 %></p>
                                         </div>
                                         <div>
-                                            <button class="btn btn-success btn-sm me-2" onclick="addCourse('<%= course.code %>')">Add</button>
-                                            <button class="btn btn-danger btn-sm" onclick="removeCourse('<%= course.code %>')">Remove</button>
+                                            <form action="/courses/remove" method="POST" class="d-inline">
+                                                <input type="hidden" name="code" value="<%= course.code %>">
+                                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </li>
@@ -82,23 +84,7 @@
         </div>
     </main>
 
-    <footer class="bg-primary text-white text-center py-3">
-        <div class="container">
-            © 2025 University of Greenfield
-        </div>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function addCourse(courseCode) {
-            // Add course logic here
-            alert('Course added: ' + courseCode);
-        }
-
-        function removeCourse(courseCode) {
-            // Remove course logic here
-            alert('Course removed: ' + courseCode);
-        }
-    </script>
 </body>
 </html>

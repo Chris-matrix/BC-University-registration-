@@ -9,7 +9,6 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 // Set view engine to EJS
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -45,5 +44,5 @@ app.use('/', studentRoutes);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port http://localhost:${PORT}`);
+  console.log(`Server is running on port  http://localhost:${PORT}`);
 });

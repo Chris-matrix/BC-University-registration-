@@ -54,12 +54,25 @@ router.get('/courses', isAuthenticated, async (req, res) => {
 // Route to add a new course
 router.post('/courses/add', isAuthenticated, async (req, res) => {
   const { name, code, capacity } = req.body;
+  const createdAt = new Date(); // Add the current date and time
   try {
-    await req.dbConnection.execute('INSERT INTO courses (name, code, capacity) VALUES (?, ?, ?)', [name, code, capacity]);
+    await req.dbConnection.execute('INSERT INTO courses (name, code, capacity, createdAt) VALUES (?, ?, ?, ?)', [name, code, capacity, createdAt]);
     res.redirect('/courses');
   } catch (error) {
     console.error('Error adding course:', error);
     res.status(500).send('Error adding course');
+  }
+});
+
+// Route to remove a course
+router.post('/courses/remove', isAuthenticated, async (req, res) => {
+  const { code } = req.body;
+  try {
+    await req.dbConnection.execute('DELETE FROM courses WHERE code = ?', [code]);
+    res.redirect('/courses');
+  } catch (error) {
+    console.error('Error removing course:', error);
+    res.status(500).send('Error removing course');
   }
 });
 

@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - University of Samllvie</title>
+    <title>Dashboard - University of Smallville</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
-            <a class="navbar-brand" href="/">UG Registration</a>
+            <a class="navbar-brand" href="/">Smallville Registration</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                        <a class="nav-link active" href="/dashboard">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/courses">Courses</a>
@@ -59,32 +59,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h2 class="card-title mb-0">Add New Course</h2>
-                    </div>
-                    <div class="card-body">
-                        <form id="add-course-form">
-                            <div class="mb-3">
-                                <label for="course-name" class="form-label">Course Name</label>
-                                <input type="text" class="form-control" id="course-name" placeholder="Enter course name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="course-code" class="form-label">Course Code</label>
-                                <input type="text" class="form-control" id="course-code" placeholder="Enter course code" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Add Course</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 
     <footer class="bg-primary text-white text-center py-3">
         <div class="container">
-            © 2025 University of Greenfield
+            © 2025 University of Smallville
         </div>
     </footer>
 
@@ -99,28 +79,6 @@
             // Remove course logic here
             alert('Course removed: ' + courseCode);
         }
-
-        document.getElementById('add-course-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const courseName = document.getElementById('course-name').value;
-            const courseCode = document.getElementById('course-code').value;
-            if (courseName && courseCode) {
-                // Add the course to the list
-                const courseList = document.getElementById('course-list');
-                const listItem = document.createElement('li');
-                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-                listItem.innerHTML = `
-                    ${courseName} (${courseCode})
-                    <div>
-                        <button class="btn btn-success btn-sm" onclick="addCourse('${courseCode}')">Add</button>
-                        <button class="btn btn-danger btn-sm" onclick="removeCourse('${courseCode}')">Remove</button>
-                    </div>
-                `;
-                courseList.appendChild(listItem);
-                document.getElementById('course-name').value = '';
-                document.getElementById('course-code').value = '';
-            }
-        });
     </script>
 </body>
 </html>
