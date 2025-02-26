@@ -130,3 +130,12 @@ footer p {
     background-color: #004080;
     color: #ffffff;
 }
+
+/* Courses Page Styles */
+.courses-header {
+    color: #000000; /* Changed to black */
+}
+
+.courses-text {
+    color: #000000; /* Changed to black */
+}

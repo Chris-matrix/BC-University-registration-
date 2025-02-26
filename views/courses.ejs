@@ -30,7 +30,7 @@
         </div>
     </nav>
 
-    <header class="jumbotron text-center text-white">
+    <header class="jumbotron text-center text-white bg-primary">
         <div class="container">
             <h1 class="display-4">Available Courses</h1>
             <p class="lead">Browse and manage your course registrations below.</p>
@@ -41,10 +41,25 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-primary text-black">
                         <h2 class="card-title mb-0">Course List</h2>
                     </div>
                     <div class="card-body">
+                        <form action="/courses/add" method="POST" class="mb-4">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Course Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Course Code</label>
+                                <input type="text" class="form-control" id="code" name="code" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="capacity" class="form-label">Capacity</label>
+                                <input type="number" class="form-control" id="capacity" name="capacity" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Course</button>
+                        </form>
                         <ul class="list-group">
                             <% courses.forEach(course => { %>
                                 <li class="list-group-item">

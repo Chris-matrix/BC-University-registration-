@@ -4,16 +4,6 @@ import isAuthenticated from '../middleware/isAuthenticated.js'; // Ensure this p
 
 const router = express.Router();
 
-// Middleware to check if user is logged in
-// Remove this duplicate declaration
-// const isAuthenticated = (req, res, next) => {
-//   if (req.session.userId) {
-//     next();
-//   } else {
-//     res.redirect('/login');
-//   }
-// };
-
 // Redirect root URL to frontpage
 router.get('/', (req, res) => {
   res.render('frontpage');
@@ -58,6 +48,18 @@ router.get('/courses', isAuthenticated, async (req, res) => {
   } catch (error) {
     console.error('Error fetching courses:', error);
     res.status(500).send('Error fetching courses');
+  }
+});
+
+// Route to add a new course
+router.post('/courses/add', isAuthenticated, async (req, res) => {
+  const { name, code, capacity } = req.body;
+  try {
+    await req.dbConnection.execute('INSERT INTO courses (name, code, capacity) VALUES (?, ?, ?)', [name, code, capacity]);
+    res.redirect('/courses');
+  } catch (error) {
+    console.error('Error adding course:', error);
+    res.status(500).send('Error adding course');
   }
 });
 
