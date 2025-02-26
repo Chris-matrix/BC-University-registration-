@@ -83,3 +83,5 @@ This file contains the CSS styles for the dashboard page.
 This project provides a comprehensive solution for managing student registrations in a university setting. By following the instructions in this README, you should be able to set up and run the application successfully.
 ```
 
+## Feel free to customize this README file further to suit your project's specific requirements. Let me know if you need any additional help!
+
