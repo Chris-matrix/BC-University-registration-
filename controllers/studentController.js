@@ -1,4 +1,6 @@
 import bcrypt from 'bcryptjs';
+import User from '../models/Student.js'; // Adjust the path as needed
+import Course from '../models/Course.js'; // Assuming you have a Course model
 
 // Render the login page
 export const renderLoginPage = (req, res) => {
@@ -13,65 +15,87 @@ export const renderRegisterPage = (req, res) => {
 // Handle login form submission
 export const login = async (req, res) => {
   const { email, password } = req.body;
+
   if (!email || !password) {
     return res.status(400).send('Email and password are required.');
   }
-  const dbConnection = req.dbConnection;
+
   try {
-    const [rows] = await dbConnection.execute('SELECT * FROM users WHERE email = ?', [email]);
-    if (rows.length === 0) {
+    // Check if the user exists
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
       return res.status(400).send('Invalid email or password.');
     }
-    const user = rows[0];
+
+    // Verify password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).send('Invalid email or password.');
     }
+
+    // Set session and redirect based on user role
     req.session.userId = user.id;
     req.session.role = user.role;
-    if (user.role === 'admin') {
-      res.redirect('/admin');
-    } else if (user.role === 'faculty') {
-      res.redirect('/teacher');
-    } else {
-      res.redirect('/dashboard');
+
+    switch (user.role) {
+      case 'admin':
+        return res.redirect('/admin');
+      case 'faculty':
+        return res.redirect('/teacher');
+      default:
+        return res.redirect('/dashboard');
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server error');
+    return res.status(500).send('Server error');
   }
 };
 
 // Handle registration form submission
 export const register = async (req, res) => {
-  const { username, email, password, role } = req.body;
-  if (!username || !email || !password || !role) {
+  console.log('Request body:', req.body); // Log the request body
+
+  const { fullName, email, password, role } = req.body;
+
+  if (!fullName || !email || !password || !role) {
     return res.status(400).send('All fields are required.');
   }
-  const dbConnection = req.dbConnection;
+
   try {
-    const [existingUser] = await dbConnection.execute('SELECT * FROM users WHERE email = ?', [email]);
-    if (existingUser.length > 0) {
+    // Check if the email is already registered
+    const existingUser = await User.findOne({ where: { email } });
+
+    if (existingUser) {
       return res.status(400).send('Email is already registered.');
     }
+
+    // Hash password and create the new user
     const hashedPassword = await bcrypt.hash(password, 10);
-    await dbConnection.execute('INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)', [username, email, hashedPassword, role]);
-    res.redirect('/login');
+    await User.create({
+      fullName,
+      email,
+      password: hashedPassword,
+      role,
+    });
+
+    return res.redirect('/login');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Something broke!');
+    return res.status(500).send('Something broke!');
   }
 };
 
 // Render the dashboard page
 export const renderDashboardPage = async (req, res) => {
-  const dbConnection = req.dbConnection;
   try {
-    const [user] = await dbConnection.execute('SELECT * FROM users WHERE id = ?', [req.session.userId]);
-    const [courses] = await dbConnection.execute('SELECT * FROM courses');
-    res.render('dashboard', { title: 'Dashboard', user: user[0], courses });
+    // Fetch the logged-in user and available courses
+    const user = await User.findByPk(req.session.userId);
+    const courses = await Course.findAll(); // Assuming you have a Course model
+
+    res.render('dashboard', { title: 'Dashboard', user, courses });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server error');
+    return res.status(500).send('Server error');
   }
 };

@@ -1,6 +1,7 @@
 import express from 'express';
 import { register, login, renderRegisterPage, renderLoginPage, renderDashboardPage } from '../controllers/studentController.js'; // Ensure this path is correct
 import isAuthenticated from '../middleware/isAuthenticated.js'; // Ensure this path is correct
+import Course from '../models/Course.js'; // Ensure this path is correct
 
 const router = express.Router();
 
@@ -43,11 +44,11 @@ router.get('/dashboard', isAuthenticated, renderDashboardPage);
 // Route to get all courses
 router.get('/courses', isAuthenticated, async (req, res) => {
   try {
-    const [courses] = await req.dbConnection.execute('SELECT * FROM courses');
+    const courses = await Course.findAll(); // Fetch all courses using Sequelize
     res.render('courses', { courses });
   } catch (error) {
-    console.error('Error fetching courses:', error);
-    res.status(500).send('Error fetching courses');
+    console.error('Error fetching courses:', error); // Log the error
+    res.status(500).send('Error fetching courses'); // Send error response
   }
 });
 
@@ -56,11 +57,16 @@ router.post('/courses/add', isAuthenticated, async (req, res) => {
   const { name, code, capacity } = req.body;
   const createdAt = new Date(); // Add the current date and time
   try {
-    await req.dbConnection.execute('INSERT INTO courses (name, code, capacity, createdAt) VALUES (?, ?, ?, ?)', [name, code, capacity, createdAt]);
+    await Course.create({ // Use Sequelize to create a new course
+      name,
+      code,
+      capacity,
+      createdAt,
+    });
     res.redirect('/courses');
   } catch (error) {
-    console.error('Error adding course:', error);
-    res.status(500).send('Error adding course');
+    console.error('Error adding course:', error); // Log the error
+    res.status(500).send('Error adding course'); // Send error response
   }
 });
 
@@ -68,11 +74,11 @@ router.post('/courses/add', isAuthenticated, async (req, res) => {
 router.post('/courses/remove', isAuthenticated, async (req, res) => {
   const { code } = req.body;
   try {
-    await req.dbConnection.execute('DELETE FROM courses WHERE code = ?', [code]);
+    await Course.destroy({ where: { code } }); // Use Sequelize to delete the course
     res.redirect('/courses');
   } catch (error) {
-    console.error('Error removing course:', error);
-    res.status(500).send('Error removing course');
+    console.error('Error removing course:', error); // Log the error
+    res.status(500).send('Error removing course'); // Send error response
   }
 });
 

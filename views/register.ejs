@@ -18,6 +18,10 @@
                     <div class="card-body">
                       <form action="/register" method="POST">
                             <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" name="fullName" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
                             </div>
@@ -31,7 +35,7 @@
                           </div>
                           <div class="mb-3">
                               <label for="role" class="form-label">Role</label>
-                              <select class="form-select" id="role" name="role">
+                              <select class="form-select" id="role" name="role" required>
                                   <option value="student">Student</option>
                                   <option value="admin">Admin</option>
                               </select>

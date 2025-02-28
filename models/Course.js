@@ -11,7 +11,19 @@ const Course = sequelize.define('Course', {
     allowNull: false,
     unique: true,
   },
-  // Add other fields as needed
+  capacity: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    onUpdate: DataTypes.NOW,
+  },
 });
 
 export default Course;
